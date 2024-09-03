@@ -14,6 +14,7 @@ function App() {
       <div className="App">
         <nav>
           <ul>
+            <li><Link to="/">WelcomePage</Link></li>
             <li><Link to="/login">Login</Link></li>
             <li><Link to="/register">Register</Link></li>
             <li><Link to="/forgot-password">Forgot Password</Link></li>
