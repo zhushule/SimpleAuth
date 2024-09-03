@@ -1,0 +1,36 @@
+# Build Folders
+bin/
+obj/
+
+# User-Specific Files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code files
+.vscode/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Mac System files
+.DS_Store
+
+# Log files
+*.log
+
+# Sensitive Environment Files
+appsettings.json
+appsettings.*.json
