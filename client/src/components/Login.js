@@ -17,7 +17,7 @@ function Login() {
         if (response.data.isAdmin) {
           history.push('/admin');
         } else {
-          history.push('/');
+          history.push('/home');
         }
       } else {
         setError(response.data.message);

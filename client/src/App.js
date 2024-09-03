@@ -6,6 +6,7 @@ import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 import AdminPage from './components/AdminPage';
 import HomePage from './components/HomePage';
+import WelcomePage from './components/WelcomePage';
 
 function App() {
   return (
@@ -24,7 +25,8 @@ function App() {
           <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/reset-password/:token" component={ResetPassword} />
           <Route path="/admin" component={AdminPage} />
-          <Route path="/" exact component={HomePage} />
+          <Route path="/" exact component={WelcomePage} />
+          <Route path="/home" component={HomePage} />
         </Switch>
       </div>
     </Router>
