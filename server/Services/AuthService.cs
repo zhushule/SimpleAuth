@@ -23,9 +23,8 @@ namespace SimpleAuthApp.Services
     {
         private static List<User> _users = new List<User>
         {
-            new User { Email = "admin@yahoo.com", Password = "admin", IsAdmin = true }, // Admin user
+            new User { Email = "admin@yahoo.com", Password = "admin", IsAdmin = true, FirstName = "Admin", LastName = "Zhu"}, // Admin user
             new User { Email = "zhushule2024@yahoo.com", Password = "123123", IsAdmin = false, FirstName = "Shule", LastName = "Zhu", Gender = "Male", Birthday = new DateTime(1990, 1, 1) }, // Example user
-            new User { Email = "test@example.com", Password = "password", IsAdmin = false }, // Example user
         };
 
         public Task<ServiceResponse> LoginAsync(LoginRequest request)
