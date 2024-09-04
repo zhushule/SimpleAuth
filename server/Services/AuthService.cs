@@ -15,6 +15,7 @@ namespace SimpleAuthApp.Services
         Task<ServiceResponse> ForgotPasswordAsync(ForgotPasswordRequest request);
         Task<ServiceResponse> ResetPasswordAsync(ResetPasswordRequest request);
         Task<List<User>> GetAllUsersAsync();
+        Task<User?> GetUserByEmailAsync(string email);
         Task<ServiceResponse> UpdateUserAsync(UpdateUserRequest request);
     }
 
@@ -94,6 +95,24 @@ namespace SimpleAuthApp.Services
         {
             return Task.FromResult(_users.Where(u => !u.IsAdmin).ToList());
         }
+
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            var user = _users.FirstOrDefault(u => u.Email.Trim().ToLower() == email.Trim().ToLower());
+
+            if (user == null)
+            {
+                Console.WriteLine("User not found.");
+            }
+            else
+            {
+                Console.WriteLine($"Found user: {user.Email}");
+            }
+            return await Task.FromResult(user);
+        }
+
+
+
 
         public Task<ServiceResponse> UpdateUserAsync(UpdateUserRequest request)
         {

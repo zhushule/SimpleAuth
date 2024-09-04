@@ -65,5 +65,17 @@ namespace SimpleAuthApp.Controllers
             var response = await _authService.UpdateUserAsync(request);
             return Ok(response);
         }
+
+        [HttpGet("user-details")]
+        public async Task<IActionResult> GetUserDetails(string email)
+        {
+            var user = await _authService.GetUserByEmailAsync(email);
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found" });
+            }
+            return Ok(user);
+        }
+
     }
 }

@@ -30,11 +30,15 @@ export const getAllUsers = () => {
   return axios.get(`${API_URL}/users`);
 };
 
+export const getUserDetails = (email) => {
+  return axios.get(`${API_URL}/user-details`, { params: { email } });
+};
+
+
 export const adminSendResetEmail = (email) => {
   return axios.post(`${API_URL}/admin/send-reset-email`, { email });
 };
 
-// Add a new function to update a user's first and last name
 export const updateUser = (email, firstName, lastName) => {
   return axios.put(`${API_URL}/update-user`, { email, firstName, lastName });
 };
