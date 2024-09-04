@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
 namespace SimpleAuthApp.Models
 {
     public class User
@@ -12,5 +13,7 @@ namespace SimpleAuthApp.Models
         public string LastName { get; set; } = string.Empty;
         public DateTime Birthday { get; set; }
         public string Gender { get; set; } = string.Empty;
+
+        public List<string> Interests { get; set; } = new List<string>();
     }
 }

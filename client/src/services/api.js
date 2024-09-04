@@ -7,14 +7,15 @@ export const login = (email, password) => {
 };
 
 // Update the register function to include the new fields
-export const register = (email, password, firstName, lastName, birthday, gender) => {
+export const register = (email, password, firstName, lastName, birthday, gender, interests) => {
   return axios.post(`${API_URL}/register`, { 
     email, 
     password,
     firstName,
     lastName,
     birthday,
-    gender
+    gender,
+    interests,
   });
 };
 

@@ -16,10 +16,17 @@ function Login() {
 
       if (response.data.success) {
         const userDetailsResponse = await getUserDetails(email);
-        const { firstName, lastName } = userDetailsResponse.data; 
+        console.log('User Details Response data:', userDetailsResponse.data); 
+        
+        const { firstName, lastName, interests } = userDetailsResponse.data; 
         
         if (firstName && lastName) {
-          localStorage.setItem('user', JSON.stringify({ firstName, lastName }));
+          // Store the user data including interests in local storage
+          localStorage.setItem('user', JSON.stringify({ 
+            firstName, 
+            lastName,
+            interests 
+          }));
 
           if (response.data.isAdmin) {
             history.push('/admin');

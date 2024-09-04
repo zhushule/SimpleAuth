@@ -52,7 +52,8 @@ namespace SimpleAuthApp.Services
                     FirstName = request.FirstName,
                     LastName = request.LastName,
                     Birthday = request.Birthday,
-                    Gender = request.Gender
+                    Gender = request.Gender,
+                    Interests = request.Interests
                 };
                 _users.Add(newUser);
                 Console.WriteLine($"User {newUser.Email} registered successfully with additional details."); // Debug statement
