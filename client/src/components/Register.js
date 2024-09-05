@@ -6,10 +6,10 @@ import '../App.css';
 function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState(''); // Added
-  const [lastName, setLastName] = useState(''); // Added
-  const [birthday, setBirthday] = useState(''); // Added
-  const [gender, setGender] = useState(''); // Added
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [birthday, setBirthday] = useState('');
+  const [gender, setGender] = useState('');
   const [interests, setInterests] = useState([]); // State to manage selected interests
   const [message, setMessage] = useState('');
 
@@ -19,7 +19,7 @@ function Register() {
   const handleRegister = async () => {
     try {
       const response = await register(email, password, firstName, lastName, birthday, gender, interests);
-      console.log('Registration Response:', response.data);  // Debug line to check the response
+      console.log('Registration Response:', response.data);
       setMessage(response.data.message);
     } catch (error) {
       console.error('Registration Error:', error);
@@ -33,11 +33,9 @@ function Register() {
       if (prevInterests.includes(interest)) {
         // Remove the interest if it's already selected
         return prevInterests.filter((i) => i !== interest);
-      } else if (prevInterests.length < 3) { // Limit to 3 selections
-        // Add the interest if it's not selected and limit is not reached
-        return [...prevInterests, interest];
       } else {
-        return prevInterests; // Do nothing if the limit is reached
+        // Add the interest if it's not selected
+        return [...prevInterests, interest];
       }
     });
   };
@@ -89,18 +87,21 @@ function Register() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <h3>Select Your Interests (Choose up to 3)</h3>
-        {availableInterests.map((interest) => (
-          <label key={interest} style={{ display: 'block', marginBottom: '8px' }}>
-            <input
-              type="checkbox"
-              value={interest}
-              checked={interests.includes(interest)}
-              onChange={() => handleInterestChange(interest)}
-            />
-            {interest}
-          </label>
-        ))}
+        <h3>Select Your Interests (Choose from 0 to {availableInterests.length})</h3>
+        {/* Styled checkboxes for Interests */}
+        <div className="checkbox-container">
+          {availableInterests.map((interest) => (
+            <label key={interest}>
+              <input
+                type="checkbox"
+                value={interest}
+                checked={interests.includes(interest)}
+                onChange={() => handleInterestChange(interest)}
+              />
+              {interest}
+            </label>
+          ))}
+        </div>
 
         <button onClick={handleRegister}>Register</button>
         <div className="register-link">

@@ -16,12 +16,9 @@ function Login() {
 
       if (response.data.success) {
         const userDetailsResponse = await getUserDetails(email);
-        console.log('User Details Response data:', userDetailsResponse.data); 
-        
         const { firstName, lastName, interests } = userDetailsResponse.data; 
         
         if (firstName && lastName) {
-          // Store the user data including interests in local storage
           localStorage.setItem('user', JSON.stringify({ 
             firstName, 
             lastName,
@@ -63,14 +60,20 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button onClick={handleLogin}>Sign In</button>
-        <div className="options">
+
+        {/* Styled checkbox for Remember Me */}
+        <div className="checkbox-container">
           <label>
-            <input type="checkbox" /> Remember Me
+            <input type="checkbox" />
+            Remember Me
           </label>
-          <Link to="/forgot-password">Forgot Password?</Link>
+        </div>
+
+        <div className="register-link">
+          <Link to="/forgot-password">Forgot Password</Link>
         </div>
         <div className="register-link">
-          Not a Member? <Link to="/register">Create an Account</Link>
+          <Link to="/register">Create an Account</Link>
         </div>
       </div>
     </div>
