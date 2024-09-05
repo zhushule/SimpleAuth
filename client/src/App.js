@@ -12,7 +12,8 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <nav>
+        {/* Navigation Bar */}
+        <nav className="navbar">
           <ul>
             <li><Link to="/">WelcomePage</Link></li>
             <li><Link to="/login">Login</Link></li>
@@ -20,15 +21,19 @@ function App() {
             <li><Link to="/forgot-password">Forgot Password</Link></li>
           </ul>
         </nav>
-        <Switch>
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-          <Route path="/forgot-password" component={ForgotPassword} />
-          <Route path="/reset-password/:token" component={ResetPassword} />
-          <Route path="/admin" component={AdminPage} />
-          <Route path="/" exact component={WelcomePage} />
-          <Route path="/home" component={HomePage} />
-        </Switch>
+
+        {/* Content Area */}
+        <div className="content-area">
+          <Switch>
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+            <Route path="/forgot-password" component={ForgotPassword} />
+            <Route path="/reset-password/:token" component={ResetPassword} />
+            <Route path="/admin" component={AdminPage} />
+            <Route path="/" exact component={WelcomePage} />
+            <Route path="/home" component={HomePage} />
+          </Switch>
+        </div>
       </div>
     </Router>
   );
