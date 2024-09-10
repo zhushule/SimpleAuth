@@ -93,12 +93,6 @@ A full-stack web application built with React for the frontend and ASP.NET Core 
 
 Your application is a full-stack web application with a React-based frontend and a C# ASP.NET Core backend. The application features user authentication, profile management, personalized coupon recommendations, and an admin dashboard for user management. The architecture follows a modular approach with a clear separation of concerns between the frontend and backend components, making it easy to develop, manage, and scale.
 
-### 5. **Tools & Technologies**
-
-- **Frontend**: React, JavaScript, Axios, CSS
-- **Backend**: ASP.NET Core (C#), .NET 6.0, SmtpClient for email functionality
-- **Other Tools**: Visual Studio, Visual Studio Code, Git, GitHub, Postman
-
 ## Technologies Used
 
 - **Frontend**: React, JavaScript, Axios, CSS
