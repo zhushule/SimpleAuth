@@ -12,7 +12,6 @@ A full-stack web application built with React for the frontend and ASP.NET Core 
   - [Backend Setup](#backend-setup)
 - [Usage](#usage)
 - [API Endpoints](#api-endpoints)
-- [Screenshots](#screenshots)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -182,10 +181,6 @@ To get a local copy up and running, follow these simple steps.
 
 - `GET /api/coupon?interests=Music,Sports`: Get coupons based on user interests.
 - _(Future)_ `POST /api/coupon/claim`: Claim a coupon for a user (planned feature).
-
-## Screenshots
-
-_(Add some screenshots of the app features, such as registration, login, profile management, and coupon claiming.)_
 
 ## Contributing
 
