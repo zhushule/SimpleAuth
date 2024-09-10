@@ -5,7 +5,7 @@ A full-stack web application built with React for the frontend and ASP.NET Core 
 ## Table of Contents
 
 - [Features](#features)
-- [Application Structure Overview] (#Application Structure Overview)
+- [Application Structure Overview](#Application-structure-overview)
 - [Technologies Used](#technologies-used)
 - [Installation](#installation)
   - [Frontend Setup](#frontend-setup)
