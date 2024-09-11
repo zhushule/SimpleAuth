@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SimpleAuthApp.Models;
 using SimpleAuthApp.Services;
@@ -13,11 +14,10 @@ namespace SimpleAuthApp.Controllers
     {
         private readonly CouponService _couponService;
 
-        public CouponController()
+        public CouponController(IAuthService authService)
         {
-            _couponService = new CouponService();
+            _couponService = new CouponService(authService);
         }
-
         [HttpGet]
         public IActionResult GetCouponsByInterests([FromQuery] string interests)
         {
@@ -37,10 +37,24 @@ namespace SimpleAuthApp.Controllers
                 c.Title,
                 c.Description,
                 c.InterestType,
-                ValidUntil = c.ValidUntil.ToString("yyyy-MM-dd")  // Format DateTime here
+                ValidUntil = c.ValidUntil.ToString("yyyy-MM-dd")
             });
 
             return Ok(response);
+        }
+
+        [HttpPost("claim")]
+        public async Task<IActionResult> ClaimCoupon([FromBody] ClaimCouponRequest request)
+        {
+            if (string.IsNullOrEmpty(request.Email) || request.CouponId <= 0)
+                return BadRequest("Invalid request data.");
+
+            var result = await _couponService.ClaimCoupon(request.Email, request.CouponId);
+
+            if (result)
+                return Ok("Coupon claimed successfully.");
+            else
+                return BadRequest("Failed to claim the coupon or it is already claimed.");
         }
     }
 }

@@ -41,16 +41,30 @@ function AdminPage() {
     setLastName(user.lastName);
   };
 
+  const updateLocalStorage = (updatedUser) => {
+    const loggedInUser = JSON.parse(localStorage.getItem('user'));
+    if (loggedInUser && loggedInUser.email === updatedUser.email) {
+      localStorage.setItem('user', JSON.stringify({
+        ...loggedInUser,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+      }));
+    }
+  };
+
   const handleSaveClick = async () => {
     try {
       await updateUser(selectedUser.email, firstName, lastName);
       setMessage(`User ${selectedUser.email} updated successfully.`);
-      setSelectedUser(null); // Close modal
-      setUsers(users.map(user =>
+      setSelectedUser(null);
+      const updatedUsers = users.map(user =>
         user.email === selectedUser.email
           ? { ...user, firstName, lastName }
           : user
-      ));
+      );
+      setUsers(updatedUsers);
+      updateLocalStorage({ email: selectedUser.email, firstName, lastName });
+
     } catch (error) {
       console.error('Error updating user:', error);
       setMessage(`Failed to update user ${selectedUser.email}.`);
@@ -80,33 +94,33 @@ function AdminPage() {
         </ul>
       </div>
 
-  {selectedUser && (
-  <div className="edit-form"> 
-    <h3>Edit User</h3>
-    <p><label>Email:</label> {selectedUser.email}</p>  
-    <p><label>Gender:</label> {selectedUser.gender}</p>  
-    <p><label>Birthday:</label> {new Date(selectedUser.birthday).toLocaleDateString()}</p> 
+      {selectedUser && (
+        <div className="edit-form"> 
+          <h3>Edit User</h3>
+          <p><label>Email:</label> {selectedUser.email}</p>  
+          <p><label>Gender:</label> {selectedUser.gender}</p>  
+          <p><label>Birthday:</label> {new Date(selectedUser.birthday).toLocaleDateString()}</p> 
 
-    <label htmlFor="firstName">First Name</label>
-    <input
-      id="firstName"
-      type="text"
-      value={firstName}
-      onChange={(e) => setFirstName(e.target.value)}
-      placeholder="First Name"
-    />
+          <label htmlFor="firstName">First Name</label>
+          <input
+            id="firstName"
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="First Name"
+          />
 
-    <label htmlFor="lastName" style={{ marginTop: '10px' }}>Last Name</label>
-    <input
-      id="lastName"
-      type="text"
-      value={lastName}
-      onChange={(e) => setLastName(e.target.value)}
-      placeholder="Last Name"
-    />
-    
-    <button onClick={handleSaveClick} style={{ marginTop: '20px' }}>Save</button>
-  </div>
+          <label htmlFor="lastName" style={{ marginTop: '10px' }}>Last Name</label>
+          <input
+            id="lastName"
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            placeholder="Last Name"
+          />
+          
+          <button onClick={handleSaveClick} style={{ marginTop: '20px' }}>Save</button>
+        </div>
       )}
     </div>
   );

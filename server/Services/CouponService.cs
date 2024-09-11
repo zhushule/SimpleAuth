@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using SimpleAuthApp.Models;
 
 namespace SimpleAuthApp.Services
 {
     public class CouponService
     {
+        private readonly IAuthService _authService;
         private readonly List<Coupon> _coupons = new List<Coupon>
         {
             // Music Coupons
@@ -35,11 +37,37 @@ namespace SimpleAuthApp.Services
             new Coupon { Id = 15, Title = "20% off Art Supplies", Description = "Get 20% off on all art supplies", InterestType = "Art", ValidUntil = DateTime.Now.AddMonths(1) }
         };
 
+        private readonly Dictionary<string, List<int>> _claimedCoupons = new Dictionary<string, List<int>>();
+        public CouponService(IAuthService authService)
+        {
+            _authService = authService;
+        }
+
+
         public List<Coupon> GetCouponsByInterests(List<string> interests)
         {
             if (interests == null || !interests.Any())
                 return new List<Coupon>();
             return _coupons.Where(c => interests.Contains(c.InterestType, StringComparer.OrdinalIgnoreCase)).ToList();
+        }
+
+        public async Task<bool> ClaimCoupon(string email, int couponId)
+        {
+            var user = await _authService.GetUserByEmailAsync(email);
+            if (user == null)
+                return false;
+            var coupon = _coupons.FirstOrDefault(c => c.Id == couponId);
+            if (coupon == null)
+                return false;
+            if (_claimedCoupons.ContainsKey(email) && _claimedCoupons[email].Contains(couponId))
+                return false;
+            if (!_claimedCoupons.ContainsKey(email))
+            {
+                _claimedCoupons[email] = new List<int>();
+            }
+
+            _claimedCoupons[email].Add(couponId);
+            return true;
         }
 
     }

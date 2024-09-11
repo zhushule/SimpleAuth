@@ -45,7 +45,13 @@ export const updateUser = (email, firstName, lastName) => {
   return axios.put(`${API_URL}/update-user`, { email, firstName, lastName });
 };
 
-// New function to fetch coupons based on interests
 export const fetchCouponsByInterests = (interests) => {
   return axios.get(COUPON_API_URL, { params: { interests } });
+};
+
+export const claimCoupon = (email, couponId) => {
+  return axios.post(`${COUPON_API_URL}/claim`, {
+    email,
+    couponId
+  });
 };
