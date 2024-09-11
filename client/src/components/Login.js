@@ -19,7 +19,9 @@ function Login() {
         const { firstName, lastName, interests } = userDetailsResponse.data; 
         
         if (firstName && lastName) {
+          localStorage.removeItem('claimedCoupons');
           localStorage.setItem('user', JSON.stringify({ 
+            email,
             firstName, 
             lastName,
             interests 

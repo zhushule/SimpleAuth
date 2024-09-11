@@ -10,7 +10,7 @@ function Register() {
   const [lastName, setLastName] = useState('');
   const [birthday, setBirthday] = useState('');
   const [gender, setGender] = useState('');
-  const [interests, setInterests] = useState([]); // State to manage selected interests
+  const [interests, setInterests] = useState([]); 
   const [message, setMessage] = useState('');
 
   // List of available interests
@@ -21,20 +21,22 @@ function Register() {
       const response = await register(email, password, firstName, lastName, birthday, gender, interests);
       console.log('Registration Response:', response.data);
       setMessage(response.data.message);
+
+      if (response.data.success) {
+        localStorage.removeItem(`claimedCoupons_${email}`);
+        window.location.href = '/login';
+      }
     } catch (error) {
       console.error('Registration Error:', error);
       setMessage('An error occurred. Please try again.');
     }
   };
 
-  // Handle checkbox changes
   const handleInterestChange = (interest) => {
     setInterests((prevInterests) => {
       if (prevInterests.includes(interest)) {
-        // Remove the interest if it's already selected
         return prevInterests.filter((i) => i !== interest);
       } else {
-        // Add the interest if it's not selected
         return [...prevInterests, interest];
       }
     });

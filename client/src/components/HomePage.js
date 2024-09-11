@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { fetchCouponsByInterests } from '../services/api';  // Import the new function
+import { fetchCouponsByInterests, claimCoupon } from '../services/api';
 import '../App.css';
 
 function HomePage() {
   const history = useHistory();
-  const [user, setUser] = useState({ firstName: '', lastName: '', interests: [] });
+  const [user, setUser] = useState({ email: '', firstName: '', lastName: '', interests: [] });
   const [coupons, setCoupons] = useState([]);
   const [error, setError] = useState('');
-  const [claimedCoupons, setClaimedCoupons] = useState([]);  // State to track claimed coupons
+  const [claimedCoupons, setClaimedCoupons] = useState([]);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem('user'));
     console.log('Retrieved User Data:', userData);
     if (userData) {
       setUser({
+        email: userData.email,  
         firstName: userData.firstName,
         lastName: userData.lastName,
         interests: userData.interests || []
       });
+
+      const storedClaimedCoupons = JSON.parse(localStorage.getItem(`claimedCoupons_${userData.email}`)) || [];
+      setClaimedCoupons(storedClaimedCoupons);
     } else {
       history.push('/login');
     }
@@ -29,8 +33,13 @@ function HomePage() {
       if (user.interests.length > 0) {
         try {
           const interestQuery = user.interests.join(',');
-          const response = await fetchCouponsByInterests(interestQuery);  // Use the function from api.js
-          setCoupons(response.data);
+          const response = await fetchCouponsByInterests(interestQuery); 
+          const allCoupons = response.data;
+          const availableCoupons = allCoupons.filter(coupon => 
+            !claimedCoupons.some(claimed => claimed.id === coupon.id)
+          );
+
+          setCoupons(availableCoupons);
         } catch (err) {
           console.error('Error fetching coupons:', err);
           setError('Error fetching coupons. Please try again.');
@@ -39,19 +48,28 @@ function HomePage() {
     };
 
     fetchCoupons();
-  }, [user.interests]);
+  }, [user.interests, claimedCoupons]);
 
-  // Function to handle claiming a coupon
-  const handleClaimCoupon = (couponId) => {
-    // Example: Mark the coupon as claimed and save it to local storage
-    const claimedCoupon = coupons.find(coupon => coupon.id === couponId);
-    setClaimedCoupons([...claimedCoupons, claimedCoupon]);  // Update the claimed coupons state
+  const handleClaimCoupon = async (couponId) => {
+    if (!user.email) {
+      console.error('User email is not available.');
+      setError('Email is missing. Please log in again.');
+      return;
+    }
 
-    // Save claimed coupons to local storage
-    localStorage.setItem('claimedCoupons', JSON.stringify([...claimedCoupons, claimedCoupon]));
+    try {
+      const response = await claimCoupon(user.email, couponId);
+      alert('Coupon claimed successfully!');
 
-    // Optional: Remove the claimed coupon from the list if needed
-    setCoupons(coupons.filter(coupon => coupon.id !== couponId));
+      const claimedCoupon = coupons.find(coupon => coupon.id === couponId);
+      const updatedClaimedCoupons = [...claimedCoupons, claimedCoupon];
+      setClaimedCoupons(updatedClaimedCoupons);
+      localStorage.setItem(`claimedCoupons_${user.email}`, JSON.stringify(updatedClaimedCoupons));
+      setCoupons(coupons.filter(coupon => coupon.id !== couponId));
+    } catch (err) {
+      console.error('Error claiming coupon:', err);
+      setError('Error claiming coupon. Please try again.');
+    }
   };
 
   const handleLogout = () => {
@@ -93,6 +111,22 @@ function HomePage() {
           </div>
         ) : (
           <p>No coupons available for your selected interests.</p>
+        )}
+
+        {/* Display Claimed Coupons */}
+        <h3>Your Claimed Coupons:</h3>
+        {claimedCoupons.length > 0 ? (
+          <div className="claimed-coupons-list">
+            {claimedCoupons.map((coupon, index) => (
+              <div key={index} className="claimed-coupon-ticket">
+                <h4>{coupon.title}</h4>
+                <p>{coupon.description}</p>
+                <p><strong>Valid Until:</strong> {coupon.validUntil}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No claimed coupons yet.</p>
         )}
 
         <button onClick={handleLogout}>Logout</button>
